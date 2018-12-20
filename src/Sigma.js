@@ -85,7 +85,7 @@ type State = {
  */
 
 
-class Sigma extends React.PureComponent {
+class Sigma extends React.Component {
   props: Props;
   state: State;
   sigma: sigma;
@@ -143,6 +143,15 @@ class Sigma extends React.PureComponent {
   componentWillUnmount() {
     this.sigma.kill()
     this.sigmaRenderer = null
+  }
+
+  shouldComponentUpdate(nextProps, nextState) {
+    if (this.props.settings != nextProps.settings) {
+      this.sigma.settings(nextProps.settings);
+      this.sigma.refresh();
+    }
+    // TODO: a more precise check must be done here.
+    return true
   }
 
   render() {
