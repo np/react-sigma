@@ -37,19 +37,19 @@ class ForceAtlas2 extends React.Component {
 	}
 
 	componentDidMount() {
-		console.log('ForceAtlas2.componentDidMount');
 		this._refreshGraph();
 	}
 
 	componentDidUpdate(prevProps, prevState) {
-		console.log('ForceAtlas2.componentDidUpdate');
-		if (prevState.running && !this.state.running && this.props.sigma) {
-			this._restartForceAtlas2(prevState.drawEdges === false ? false : true); // TODO fix boolean
+		let s = this.props.sigma;
+		if (prevState.running && !this.state.running && s) {
+			s.stopForceAtlas2();
+			s.settings({ drawEdges: prevState.drawEdges === false ? false : true });
+			s.refresh();
 		}
 	}
 
 	componentWillUnmount() {
-		console.log('ForceAtlas2.componentWillUnmount');
 		if (this.props.sigma) this.props.sigma.killForceAtlas2();
 		if (this.state.timer) clearTimeout(this.state.timer);
 	}
@@ -65,15 +65,7 @@ class ForceAtlas2 extends React.Component {
 		return null;
 	}
 
-	_restartForceAtlas2(drawEdges) {
-		let s = this.props.sigma;
-		s.stopForceAtlas2();
-		s.settings({ drawEdges });
-		s.refresh();
-	}
-
 	_refreshGraph() {
-		console.log('ForceAtlas2._refreshGraph');
 		let s = this.props.sigma;
 		if (!sigma || !s) return;
 

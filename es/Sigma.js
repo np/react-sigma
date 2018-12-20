@@ -1,6 +1,5 @@
 import React from 'react';
 import { embedProps } from './tools';
-// import Context from './Context'
 import '../sigma/main';
 
 /**
@@ -60,7 +59,6 @@ import '../sigma/main';
  *
  */
 
-// class Sigma extends React.PureComponent {
 class Sigma extends React.Component {
 
   constructor(props) {
@@ -68,14 +66,12 @@ class Sigma extends React.Component {
 
     this.initRenderer = container => {
       if (container) {
-        console.log('initRenderer(container)');
         let options = { container };
         if (this.props.renderer) options.type = this.props.renderer;
         this.sigmaRenderer = this.sigma.addRenderer(options);
         this.sigma.refresh();
         this.setState({ renderer: true });
       } else if (this.sigmaRenderer) {
-        console.log('initRenderer(null) with this.sigmaRenderer');
         this.sigma.killRenderer(this.sigmaRenderer);
         this.sigmaRenderer = null;
         this.setState({ renderer: false });
@@ -100,25 +96,17 @@ class Sigma extends React.Component {
     this.sigmaRenderer = null;
   }
 
-  // shouldComponentUpdate(nextProps, nextState) {
-  //   console.log('shouldComponentUpdate')
-  //   return true
-  // }
-
-  /*
-  render() {
-    let children = this.state.renderer ? this.props.children : null
-    console.log('Sigma.render')
-    return <div ref={this.initRenderer} style={this.props.style}>
-        <Context.Provider value={this.sigma}>
-          { children }
-        </Context.Provider>
-      </div>
+  shouldComponentUpdate(nextProps, nextState) {
+    if (this.props.settings != nextProps.settings) {
+      this.sigma.settings(nextProps.settings);
+      this.sigma.refresh();
+    }
+    // TODO: a more precise check must be done here.
+    return true;
   }
-  */
+
   render() {
     let children = this.state.renderer ? embedProps(this.props.children, { sigma: this.sigma }) : null;
-    console.log('Sigma.render');
     return React.createElement(
       'div',
       { ref: this.initRenderer, style: this.props.style },

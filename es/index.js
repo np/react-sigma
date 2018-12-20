@@ -8,8 +8,6 @@ import _LoadJSON from './LoadJSON';
 export { _LoadJSON as LoadJSON };
 import _LoadGEXF from './LoadGEXF';
 export { _LoadGEXF as LoadGEXF };
-import _LoadGraph from './LoadGraph';
-export { _LoadGraph as LoadGraph };
 import _Filter from './Filter';
 export { _Filter as Filter };
 import _ForceAtlas from './ForceAtlas2';
